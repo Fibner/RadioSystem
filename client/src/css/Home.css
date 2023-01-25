@@ -1,0 +1,21 @@
+#welcome-text{
+    font-size: 40px;
+    text-align: center;
+}
+
+input{
+    background-color: #4267B2;
+    color: white;
+    border: 1px;
+    border-radius: 10px;
+    min-height: 50px;
+    cursor: pointer;
+}
+
+input:hover{
+    background-color: #4267b2ab;
+}
+
+img{
+    max-width: 2%;
+}
