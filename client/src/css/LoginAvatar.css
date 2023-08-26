@@ -1,0 +1,20 @@
+/* #LoginAvatar>div{
+    display: flex;
+    float: right;
+} */
+
+#avatar{
+    cursor: pointer;
+}
+
+#logout-div{
+    display: none;
+}
+
+#avatar:hover #logout-div{
+    display: block;
+}
+
+#avatar:hover #name-div{
+    display: none;
+}

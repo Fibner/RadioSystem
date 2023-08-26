@@ -1,37 +1,59 @@
 import "./css/App.css";
 import { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login } from "./Components/Login";
+import {
+  BrowserRouter,
+  Navigate,
+  redirect,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { Home } from "./Components/Home";
 import { Privacy } from "./Components/Privacy";
 import { AddSong } from "./Components/AddSong";
+import { config } from "./Constants";
+import { Navbar } from "./Components/Navbar";
+import { History } from "./Components/History";
+import { useDispatch, useSelector } from "react-redux";
+import { Player } from "./Components/Player";
+import { fetchUser } from "./data/userActions";
+import store from "./data/store";
+import { UsersList } from "./Components/UsersList";
+import {RequestsList} from "./Components/RequestsList"
+import { ControlPanel } from "./Components/ControlPanel";
+import { SongsList } from "./Components/SongsList";
 
 function App() {
-  const [user, setUser] = useState();
-  fetch("http://localhost:4999/api/auth", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => {
-      //todo tu trzeba coś z tym json pomyśleć
-      if (response.status === 200)
-        return response.json().then((json) => setUser(json.user));
-      if (response.status === 403) return console.log("nie zalogowany");
-      throw new Error("authentication has been failed!");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const user = useSelector((state) => state);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
+  const add = "/add";
+  const history = "/history";
+  const users = "/users"
+  const requests = "/requests";
+  const panel = "/panel";
+  const songs = "/songs";
+  const player = "/player/secretpasswordthatnobodyknows";
 
   return (
     <div>
-      <div id="navbar">.</div>
       <BrowserRouter>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="" element={!user?<Home />:<Navigate to={add}/>} />
+          <Route path={add} element={user?<AddSong />:<Navigate to={"/"}/>}></Route>
+          <Route path={history} element={user?<History />:<Navigate to={"/"}/>}></Route>
+          <Route
+            path={player}
+            element={<Player />}
+          />
           <Route path="/privacy" element={<Privacy />}></Route>
-          <Route path="/add" element={<AddSong />}></Route>
+          <Route path="/*" element={<Navigate to={"/"} />}></Route>
+          <Route path={users} element={user?user.admin?<UsersList/>:<Navigate to={"/"}/>:<Navigate to={"/"}/>}></Route>
+          <Route path={requests} element={user?user.admin?<RequestsList></RequestsList>:<Navigate to={"/"}/>:<Navigate to={"/"}/>}></Route>
+          <Route path={panel} element={user?user.admin?<ControlPanel></ControlPanel>:<Navigate to={"/"}/>:<Navigate to={"/"}/>}></Route>
+          <Route path={songs} element={user?user.admin?<SongsList></SongsList>:<Navigate to={"/"}/>:<Navigate to={"/"}/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
