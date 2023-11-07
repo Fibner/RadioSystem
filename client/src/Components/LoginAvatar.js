@@ -13,7 +13,7 @@ export const LoginAvatar = () => {
 
   function logout() {
     axios
-      .get(config.url.API_URL + "/facebook/logout", { withCredentials: true })
+      .get(config.url.API_URL + "/discord/logout", { withCredentials: true })
       .then((response) => {
         if(response.data.loggedOut){
           dispatch(logoutUser())
@@ -23,7 +23,7 @@ export const LoginAvatar = () => {
   }
   return (
     <li className="li" id="avatar" onClick={logout}>
-      <div id="name-div"> {user ? user.first_name : null}</div>
+      <div id="name-div"> {user ? user.username : null}</div>
       <div id="logout-div">Wyloguj</div>
     </li>
   );

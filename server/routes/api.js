@@ -13,7 +13,7 @@ router.use(passport.initialize());
 router.use(passport.session());
 router.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
-    if(req.user.id === '2518686474951819'){
+    if(req.user.id === '409757439634833419'){
       res.status(200).json({
         authenticated: true,
         admin: true,

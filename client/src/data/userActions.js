@@ -14,7 +14,7 @@ export const fetchUser = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(config.url.API_URL + "/api/auth", { withCredentials: true });
-      const userData = response.data.user._json;
+      const userData = response.data.user;
       const admin = response.data.admin?true:null;
       userData.admin = admin;
       dispatch(fetchUserSuccess(userData));

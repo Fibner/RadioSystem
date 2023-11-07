@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import { config } from "../Constants";
 import "../css/Home.css";
-import logo from "../pictures/fblogo.png";
+// import logo from "../pictures/fblogo.png";
 export const Home = () => {
   const user = useSelector((state) => state);
-  function loginFacebook() {
-    window.open(config.url.API_URL + "/facebook", "_self");
+  function loginDiscord() {
+    window.open(config.url.API_URL + "/discord", "_self");
   }
   const navigate = useNavigate();
   // useEffect(() => {
@@ -29,8 +29,8 @@ export const Home = () => {
           <input
             className={"login-btn"}
             type={"button"}
-            value="Zaloguj się przez Facebook"
-            onClick={loginFacebook}
+            value="Zaloguj się przez Discord"
+            onClick={loginDiscord}
           />
         </div>
       </div>

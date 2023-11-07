@@ -11,7 +11,6 @@ export const History = () => {
     axios
       .get(config.url.API_URL + "/api/getHistory", { withCredentials: true })
       .then((response) => {
-        // console.log(response.data.history);
         setHistory(response.data.history);
       });
   }, []);

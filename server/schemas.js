@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 let userSchema = new mongoose.Schema({
-    facebookId: String,
-    name: String,
-    picture_url: String,
+    discordId: String,
+    username: String,
+    avatar: String,
     authorizationDate: Date
   });
 let songSchema = new mongoose.Schema({

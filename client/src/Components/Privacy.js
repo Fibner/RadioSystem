@@ -1,7 +1,7 @@
 export const Privacy = () => {
   return (
     <div>
-      <div style={{textAlign: "center"}}>dc do zgłaszania błędów theNewFibner#4376</div>
+      <div style={{textAlign: "center"}}>dc do zgłaszania błędów fibner</div>
       <br></br>
       <br></br>
       <h1 style={{textAlign: "center"}}>Polityka Prywatności</h1>

@@ -6,8 +6,8 @@ const prod = {
    };
 const dev = {
     url: {
-     APP_URL: 'http://localhost:3000',
-     API_URL: 'http://localhost:4999',
-     WS_URL: 'ws://localhost:4999'}
+     APP_URL: 'http://10.0.1.26:3000',
+     API_URL: 'http://10.0.1.26:4999',
+     WS_URL: 'ws://10.0.1.26:4999'}
    };
 export const config = process.env.NODE_ENV === 'development' ? dev : prod;

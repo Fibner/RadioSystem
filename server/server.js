@@ -2,7 +2,7 @@ const config = require("./config");
 const express = require("express");
 const app = express();
 const port = config.PORT;
-const facebookRouter = require("./routes/facebook");
+const discordRouter = require("./routes/discord");
 const apiRouter = require("./routes/api");
 const cors = require("cors");
 const passport = require("passport");
@@ -47,7 +47,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Adding routes to express server
-app.use("/facebook", facebookRouter);
+app.use("/discord", discordRouter);
 app.use("/api", apiRouter);
 
 //Start listening

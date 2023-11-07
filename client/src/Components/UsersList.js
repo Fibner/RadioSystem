@@ -12,9 +12,7 @@ export const UsersList = () => {
     shouldReconnect: (closeEvent) => true,
     onMessage: (message) => {
       const json = JSON.parse(message.data);
-      // console.log(json);
       if (json.users) {
-        // console.log(json.users)
         setUsers(json.users)
       }
     },
@@ -22,7 +20,8 @@ export const UsersList = () => {
 
   return <div>
     {users?users.map((user)=>{
-        return (<div style={{display: "flex", alignItems: "center"}}><span><img style={{maxWidth: 25+'px'}} src={user.picture_url} alt="profile_pic"/></span><span>{user.name}</span></div>)
+      console.log(user);
+        return (<div style={{display: "flex", alignItems: "center"}}><span><img style={{maxWidth: 25+'px'}} src={"https://cdn.discordapp.com/avatars/"+user.discordId+"/"+user.avatar} alt="profile_pic"/></span><span>{user.username}</span></div>)
     }):null}
   </div>;
 };

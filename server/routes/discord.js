@@ -3,34 +3,35 @@ const router = require("express").Router();
 const passport = require("passport");
 const { default: mongoose, Error } = require("mongoose");
 const { User } = require("../schemas");
-const FacebookStrategy = require("passport-facebook").Strategy;
+const DiscordStrategy = require("passport-discord").Strategy;
 const {getUsers} = require("./db");
 const {admin, player} = require("../globals")
 
 
 passport.use(
-  new FacebookStrategy(
+  new DiscordStrategy(
     {
-      clientID: config.FACEBOOK_CLIENT_ID,
-      clientSecret: config.FACEBOOK_CLIENT_SECRET,
-      callbackURL: `http://localhost:4999/facebook/callback`,
-      profileFields: ["id", "first_name", "displayName", "picture"]
+      clientID: config.DISCORD_CLIENT_ID,
+      clientSecret: config.DISCORD_CLIENT_SECRET,
+      callbackURL: config.CALLBACK_URL,
+      scope: ['identify']
     },
     function (accessToken, refreshToken, profile, done) {
-      User.findOne({ facebookId: profile.id }, function (err, user) {
+      // return done(console.log(profile));
+      User.findOne({ discordId: profile.id }, function (err, user) {
         if (err) {
           return done(err);
         }
 
         if (user) {
-          // Użytkownik już istnieje w bazie danych
+          // The user is already in db
           return done(null, profile);
         } else {
-          // Użytkownik nie istnieje, więc zapisz go do bazy danych
+          // The user is not in db, so save him
           let newUser = new User({
-            facebookId: profile.id,
-            name: profile.displayName,
-            picture_url: profile.photos[0].value,
+            discordId: profile.id,
+            username: profile.username,
+            avatar: profile.avatar,
             authorizationDate: new Date()
           });
           newUser.save(async function (err) {
@@ -52,17 +53,17 @@ passport.serializeUser((user, done) => {
   });
 });
 
-passport.deserializeUser((obj, done) => {
+passport.deserializeUser((user, done) => {
   process.nextTick(function () {
-    done(null, obj);
+    done(null, user);
   });
 });
 
-router.get("/", passport.authenticate("facebook"));
+router.get("/", passport.authenticate("discord"));
 
 router.get(
   "/callback",
-  passport.authenticate("facebook", { failureRedirect: config.FRONTEND_HOST }),
+  passport.authenticate("discord", { failureRedirect: config.FRONTEND_HOST }),
   function (req, res) {
     // Pomyślne logowanie
     res.redirect(config.FRONTEND_HOST+"/add");

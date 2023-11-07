@@ -1,5 +1,5 @@
 const passport = require("passport");
-const Strategy = require("passport-facebook").Strategy;
+const Strategy = require("passport-discord").Strategy;
 
 passport.use(
     new Strategy(
@@ -11,7 +11,8 @@ passport.use(
       function (accessToken, refreshToken, profile, cb) {
         // save the profile on the Database
         // Save the accessToken and refreshToken if you need to call facebook apis later on
-        return cb(null, profile);
+        console.log(profile);
+        // return cb(null, profile);
       }
     )
   );

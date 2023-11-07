@@ -12,9 +12,7 @@ export const SongsList = ()=>{
       shouldReconnect: (closeEvent) => true,
       onMessage: (message) => {
         const json = JSON.parse(message.data);
-        // console.log(json);
         if (json.songs) {
-          // console.log(json.songs)
           setSongs(json.songs)
         }
       },
