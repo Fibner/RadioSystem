@@ -9,11 +9,20 @@ const fs = require("fs");
 const { randomSong, getSong, getHistory, getRequests } = require("./db");
 const { admin } = require("../globals");
 
+function isAdmin(req){
+  for(item of config.ADMIN_ID){
+    if(req.user.id === item){
+      return true;
+    }
+  }
+  return false;
+}
+
 router.use(passport.initialize());
 router.use(passport.session());
 router.get("/auth", (req, res) => {
   if (req.isAuthenticated()) {
-    if(req.user.id === '409757439634833419'){
+    if(isAdmin(req)){
       res.status(200).json({
         authenticated: true,
         admin: true,
@@ -83,7 +92,7 @@ router.post("/addSong", async (req, res) => {
         return null;
       });
     //create mongoose scheme
-    if (req.user.id === "2518686474951819") {
+    if (isAdmin(req)) {
       let song = new Song({
         songId: ytResponse.id,
         title: ytResponse.snippet.title,

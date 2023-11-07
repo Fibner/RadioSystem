@@ -11,11 +11,12 @@ export const RequestsList = ()=>{
       },
       shouldReconnect: (closeEvent) => true,
       onMessage: (message) => {
+        console.log(message);
         const json = JSON.parse(message.data);
-        console.log(json);
-        if (json.requests) {
-          console.log(json.requests)
+        if (json.requests.length !== 0) {
           setRequests(json.requests)
+        }else{
+          setRequests(null);
         }
       },
     });
