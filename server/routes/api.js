@@ -4,7 +4,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const User = require("../schemas").User;
 const axios = require("axios");
-const { Song, Request } = require("../schemas");
+const { Song, Request, ChristmasSong } = require("../schemas");
 const fs = require("fs");
 const { randomSong, getSong, getHistory, getRequests } = require("./db");
 const { admin } = require("../globals");
@@ -67,7 +67,12 @@ router.post("/addSong", async (req, res) => {
     }
 
     //check if song in already in database
-    let temp = await Song.findOne({ songId: requestId });
+    let temp;
+    if(new Date().getMonth() == 11){
+      temp = await ChristmasSong.findOne({ songId: requestId });
+    }else{
+      temp = await Song.findOne({ songId: requestId });
+    }
     let tempReq = await Request.findOne({songId: requestId});
     if (temp || tempReq) return res.status(406).send("Piosenka jest już w bazie");
 
@@ -93,6 +98,23 @@ router.post("/addSong", async (req, res) => {
       });
     //create mongoose scheme
     if (isAdmin(req)) {
+    if(new Date().getMonth() == 11){
+      let song = new ChristmasSong({
+        songId: ytResponse.id,
+        title: ytResponse.snippet.title,
+        thumbnail: ytResponse.snippet.thumbnails.default.url,
+        publishedDate: new Date(ytResponse.snippet.publishedAt),
+        link: "https://www.youtube.com/watch?v=" + ytResponse.id,
+        viewCount: ytResponse.statistics.viewCount,
+        likeCount: ytResponse.statistics.likeCount,
+        dislikeCount: ytDislikes.dislikes,
+        commentCount: ytResponse.statistics.commentCount,
+        addBy: req.user.id,
+      });
+      song.save((err) =>
+        err ? res.status(500).send("Bład w dodawaniu do bazy") : null
+      );
+    }else{
       let song = new Song({
         songId: ytResponse.id,
         title: ytResponse.snippet.title,
@@ -108,6 +130,7 @@ router.post("/addSong", async (req, res) => {
       song.save((err) =>
         err ? res.status(500).send("Bład w dodawaniu do bazy") : null
       );
+    }
     } else {
       let request = new Request({
         songId: ytResponse.id,
